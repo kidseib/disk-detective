@@ -25,14 +25,43 @@ Windows may show a security prompt because the app is not code-signed. Confirm t
 - Shows a visual map of what is using space on each drive.
 - Finds large files and duplicates.
 - Cleans up through quarantine instead of silent deletion.
-- Moves files to another drive with verification and leaves a shortcut at the old location.
+- Moves large folders to another drive with verification and leaves a junction (folder link) at the old location.
 - Recovers interrupted moves with a crash-recovery journal.
 - Produces a report and offers a larger-text mode.
+
+## Moving big folders to another drive
+
+Disk Detective can move a large folder to another drive and leave a **junction** at the original location. A junction is a Windows folder link: programs still use the original `C:\...` path, but the files themselves live on the other drive.
+
+This is intended for large, self-contained folders such as GPU shader caches:
+
+- `C:\Users\<you>\AppData\Local\NVIDIA\DXCache`
+- `C:\Users\<you>\AppData\Local\D3DSCache`
+- other large cache or game folders outside protected system locations
+
+The move is verified: Disk Detective copies the folder, checks the file count and total size, creates the junction, and only then removes the old copy. If Windows interrupts the move, the crash-recovery journal finishes it or puts the folder back.
+
+**Junctions, not symbolic links.** A junction is directory-only, works on NTFS, and normally does not need administrator rights. Disk Detective does not offer a separate "create a symlink" command; it creates the junction as part of a move.
+
+**It refuses to move:**
+
+- a drive root
+- the Windows or Program Files folders, or the ProgramData root
+- the entire user profile, the AppData, AppData\Local, and AppData\Roaming roots, Desktop, Documents, Downloads, Pictures, Videos, or Music
+- OneDrive, Dropbox, Google Drive, and other cloud-synced folders
+- a folder that already contains a junction or link
+- a folder that a program is using
+- a move to the same drive
+- an empty folder
+
+**The original and destination drives should be NTFS.** FAT/exFAT moves fail safely. The whole AppData or Program Files folder cannot be moved, but a specific cache inside AppData can be.
+
+Most programs follow junctions without noticing, but some installers, updaters, backup tools, and games do not. Keep a backup, and use **Undo** or **Repair** in "What I did" if a junction needs to be checked or reversed.
 
 ## Safety
 
 - Files are cleaned up through quarantine, not silently deleted.
-- Cross-drive moves are verified and leave a shortcut at the original location.
+- Cross-drive moves are verified and leave a junction at the original location.
 - A crash-recovery journal completes or reverses interrupted moves.
 - One copy of the app and one file-changing operation can run at a time.
 - Folders containing junctions or links are refused for moves.

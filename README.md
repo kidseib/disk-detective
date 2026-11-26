@@ -22,4 +22,10 @@ The zip contains the app, its two help files, and the launcher.
 - Folders containing junctions or links are refused for moves.
 - Same-drive moves are refused, and free space at the destination is checked before a move.
 
+## AI disclosure
+
+Disk Detective was built with **Buffy**, the AI coding agent behind **Codebuff**. Buffy wrote and reviewed the application code, tests, documentation, and packaging, and prepared the GitHub release. The project owner directed the work, reviewed the results, and authorized publication.
+
+The app does not use AI at runtime, does not call an AI service, and does not send your data anywhere. AI-assisted code can contain mistakes, so review and test it before relying on it for important files.
+
 See `HOW TO USE.txt` and `FEATURES.txt` inside the zip for the full guide.

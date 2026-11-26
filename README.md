@@ -22,6 +22,18 @@ The zip contains the app, its two help files, and the launcher.
 - Folders containing junctions or links are refused for moves.
 - Same-drive moves are refused, and free space at the destination is checked before a move.
 
+## VirusTotal
+
+The published zip has a clean VirusTotal report:
+
+- [View the VirusTotal report](https://www.virustotal.com/gui/file/7b0230650b037e545d15f608b06f0889adbc7c3607e551a7cc9364a57dd7966e)
+- Scanned file: `Disk Detective 1.0.0.zip` (same SHA-256 as the published `Disk Detective.zip`)
+- SHA-256: `7b0230650b037e545d15f608b06f0889adbc7c3607e551a7cc9364a57dd7966e`
+- Last analysis: November 25, 2026
+- Result: **No security vendors flagged this file as malicious.**
+
+VirusTotal scans the zip and may inspect its contents. The zip is the right artifact to check because it is exactly what you download; a folder cannot be submitted directly. Some engines cannot process archives, so a clean report is not a guarantee. For a file-by-file check, submit the extracted `.ps1` files separately.
+
 ## AI disclosure
 
 Disk Detective was built with **Buffy**, the AI coding agent behind **Codebuff**. Buffy wrote and reviewed the application code, tests, documentation, and packaging, and prepared the GitHub release. The project owner directed the work, reviewed the results, and authorized publication.

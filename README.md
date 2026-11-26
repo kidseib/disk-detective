@@ -3,6 +3,7 @@
 **A local Windows storage cleaner with a visual space map, safe quarantine, and verified cross-drive moves.**
 
 [![Latest release](https://img.shields.io/github/v/release/kidseib/disk-detective?style=flat-square&label=release&color=2f81f7)](https://github.com/kidseib/disk-detective/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2ea043?style=flat-square)](LICENSE)
 [![Windows checks](https://github.com/kidseib/disk-detective/actions/workflows/windows-check.yml/badge.svg?branch=main)](https://github.com/kidseib/disk-detective/actions/workflows/windows-check.yml)
 [![Windows 10 and 11](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=flat-square&logo=windows&logoColor=white)](#requirements)
 [![PowerShell 5.1](https://img.shields.io/badge/PowerShell-5.1-5391FE?style=flat-square&logo=powershell&logoColor=white)](#requirements)
@@ -71,5 +72,9 @@ The app does not use AI at runtime, does not call an AI service, and does not se
 - **Freebuff** — cloud development workspace
 
 See [CONTRIBUTORS.md](CONTRIBUTORS.md) for details.
+
+## License
+
+Released under the [MIT License](LICENSE). Copyright © 2026 kidseib.
 
 See `HOW TO USE.txt` and `FEATURES.txt` inside the zip for the full guide.

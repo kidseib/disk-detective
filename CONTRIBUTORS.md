@@ -2,6 +2,7 @@
 
 - **kidseib** — project owner
 - **Buffy (Codebuff)** — AI coding agent; implementation, safety review, packaging, and GitHub release
+- **Freebuff** — cloud development workspace; initial project import and build environment
 
 ## AI assistance
 

@@ -129,7 +129,17 @@ Disk Detective runs entirely on your PC. It has no server, no telemetry, and no 
 - Windows PowerShell 5.1
 - .NET Framework 4.8 (included with current Windows 10 and Windows 11)
 
-## Code signing
+## Building from source
+
+Releases are built on Windows from this repository by the public [windows-check workflow](.github/workflows/windows-check.yml).
+
+1. Install the [.NET SDK](https://dotnet.microsoft.com/download) (6.0 or later) and use Windows PowerShell 5.1.
+2. Clone the repository.
+3. In PowerShell, run `.\build\Build-Release.ps1 -Version 1.1.0`.
+
+The script builds `DiskDetectiveLauncher.exe`, assembles the nine release files, and writes `dist\Disk Detective 1.1.0.zip` with its SHA-256. It does not sign, commit, or publish anything.
+
+## Code signing policy
 
 Disk Detective is preparing to use free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/). The `v1.1.0` candidate is not signed yet, and no signed release has been published. See [CODE_SIGNING.md](CODE_SIGNING.md) for what will be signed and how to verify a future signed release.
 

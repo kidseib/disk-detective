@@ -1,6 +1,6 @@
 # Code signing policy
 
-**Status:** Draft for the SignPath Foundation application. No signed release has been published yet. The `v1.1.0` candidate is unsigned and intended for local evaluation. Its launcher uses PowerShell's `RemoteSigned` policy; if Windows marks the extracted scripts as downloaded, unblock the ZIP or use the fallback `Disk Detective.bat`. A signed release will contain signed scripts.
+**Status:** Prepared for the SignPath Foundation application; not submitted yet. No signed release has been published yet. The `v1.1.0` candidate is unsigned and intended for local evaluation. Its launcher uses PowerShell's `RemoteSigned` policy; if Windows marks the extracted scripts as downloaded, unblock the ZIP or use the fallback `Disk Detective.bat`. A signed release will contain signed scripts.
 
 Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
 

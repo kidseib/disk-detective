@@ -1,0 +1,145 @@
+DISK DETECTIVE - FEATURES AND WHAT IT SHOULD DO
+================================================
+
+WHAT IT IS
+----------
+A local Windows program for seeing what uses disk space, safely removing
+caches and leftovers, and moving large folders to another drive.
+- No installer. No server. No internet. No account.
+- Runs on the PowerShell 5.1 that comes with Windows 10 and 11.
+- Everything stays on this PC.
+
+FILES IN THIS ZIP
+-----------------
+Disk Detective.bat        Starts the program.
+DiskDetective.ps1         The window and its three tabs.
+DiskDetective.Core.ps1    Finds caches and leftover files.
+DiskDetective.Tools.ps1   Drives, measuring, copying, shortcuts.
+DiskDetective.Data.ps1    Trash, history, scanning, reports, settings.
+HOW TO USE.txt            Short step-by-step instructions.
+FEATURES.txt              This list.
+
+HOW TO START
+------------
+1. Keep all files together in one folder.
+2. Double-click "Disk Detective.bat".
+3. If Windows blocks the script: right-click DiskDetective.ps1 ->
+   Properties -> tick Unblock -> OK, then start again.
+
+TAB 1 - SPACE MAP
+-----------------
+Purpose: show what is taking space, visually.
+
+- Drive box: choose the drive to look at; shows free space and total size.
+- "Scan drive": measures the chosen place and draws coloured blocks.
+  Bigger block = more bytes. Click a block to select that folder;
+  double-click to open it; "Up one level" goes back.
+- Breadcrumb line shows where you are.
+- Folder table: name, size, file count, last used, type.
+- "Whole drive scan": one pass over the whole drive; lists the biggest
+  folders anywhere and the biggest files. "Stop" is available. Read-only.
+- "What is this folder?": plain-language explanation for any folder,
+  including folders the cache scanner does not know.
+- "Move selected folder(s)...": relocate one or more folders to another
+  drive. A move inside the same drive is refused because it would not free
+  space there; the destination's free space is checked before any copy.
+
+TAB 2 - CLEAN UP
+----------------
+Purpose: find caches and leftovers and explain the risk.
+
+- "Scan my PC": looks for known caches and leftovers (Windows and browser
+  temp files, GPU shader caches such as DXCache/D3DSCache, installers,
+  old game files and similar). Only looks; changes nothing.
+- Risk colours:
+    Green  Safe to delete - rebuilds itself
+    Blue   Low risk - leftover installers/game files
+    Amber  Ask first - may hold settings
+    Pink   Protected - save games; never offered for deletion
+- Filter: Everything / Safe to delete / Low risk / Ask before deleting /
+  Protected.
+- Ticks: tick items, then "Delete ticked items" (confirmation first).
+  Protected items cannot be ticked.
+- Green "Clean up safe items": confirmation lists exactly what will move.
+- "What is this?": what the item is, why it is there, what deleting does.
+- "Move this folder...": relocate a cache instead of deleting it.
+- "Leave this alone": hide an item from future scans; "Ignored folders"
+  in the status bar brings it back.
+- "Duplicate files...": finds files with identical content. One copy per
+  group is kept (the newest); tick the others to move them to the Trash.
+- "Windows reserves...": explains space Windows keeps for itself
+  (Windows.old, hiberfil.sys, pagefile.sys, Recycle Bin, WinSxS) and
+  offers the correct Windows tool or command. Nothing is changed
+  automatically.
+
+TAB 3 - WHAT I DID
+------------------
+Purpose: show every change and make it reversible.
+
+- Lists items in Disk Detective's Trash and folders that were moved,
+  with date, size and current health ("Works -> D:\..." or "BROKEN").
+- "Put it back": restore a trashed item to its original place.
+- "Undo this move": copy the folder back and remove the shortcut.
+- "Repair shortcut...": point a move at the folder's new location if the
+  drive letter changed or the folder was moved by hand.
+- "Check all shortcuts": tests every recorded move.
+- "Delete for good": permanently removes one Trash item, after a second
+  confirmation.
+- "Save a report": writes a standalone HTML page listing findings,
+  history and actions; useful when asking someone for help.
+
+SAFETY RULES (WHAT IT SHOULD DO)
+--------------------------------
+- Scanning never changes anything.
+- Nothing is deleted or moved without an explicit confirmation.
+- Deletions go to Disk Detective's Trash, a hidden folder on the SAME
+  drive, not the Recycle Bin (Windows can silently permanently delete
+  items that do not fit in the bin). Items can be put back.
+- Protected save data is never offered for deletion.
+- Moving a folder: check it is safe and on another drive -> refuse folders
+  that contain junctions or links (they cannot be copied safely) -> check
+  the destination has enough free space -> copy -> verify file count and
+  bytes -> rename the old folder -> create a junction -> remove the backup.
+  If any step fails, it rolls back and reports why.
+- Only one window and one change may run at a time, so two copies can never
+  touch the same folder. Closing is blocked while a change is running.
+- Every move records its stages in a small journal. After a crash, power
+  loss or forced restart, the next start finishes the move or puts the
+  folder back automatically and reports what it did. A record is kept when
+  the source drive is unplugged, and damaged records cannot point recovery
+  at the original folder. A complete copy is never deleted automatically,
+  and a recreated original plus a backup is left untouched for you to check.
+  Recovery also waits for the same change lock as moves and deletes.
+- Refuses drive roots, Windows, Program Files, ProgramData, the user
+  profile, AppData, personal folders, cloud-synced folders and existing
+  junctions.
+- Detects a program using the folder and stops without changing it.
+- Handles long paths (over 260 characters) and retries busy files.
+- The app can be closed or a scan stopped at any time without leaving
+  half-changed data.
+- "Larger text" restarts the window with bigger writing.
+- "Restart as administrator" lets it see Windows' own temporary folders.
+- Remembers the last drive and the text size in
+  %LOCALAPPDATA%\DiskDetective. Nothing is sent anywhere.
+
+WHAT IT DOES NOT DO
+-------------------
+- It is not a secure eraser. "Delete for good" is a normal permanent
+  delete, not a shredder.
+- It does not clean the registry, drivers, or repair Windows.
+- It does not run on a schedule and does not clean automatically.
+- Junctions need NTFS. Moving a folder to a FAT/exFAT drive will fail
+  safely; choose an NTFS drive.
+- Some Windows folders are only visible as administrator.
+- A whole-drive scan or duplicate search can take several minutes.
+
+QUICK CHECK
+-----------
+1. Start it; the window fits the screen and shows three tabs.
+2. Scan a drive; blocks appear; double-click opens a folder; Up returns.
+3. Scan my PC; colours and "What is this?" read correctly.
+4. Move a cache to another drive; confirm the junction still works and
+   "What I did" reports "Works". Try Undo and Repair on a copy first.
+5. Trash an item, put it back, then delete one for good.
+6. Save a report and open it in a browser.
+7. Tick Larger text; the window reopens larger.

@@ -1,0 +1,132 @@
+DISK DETECTIVE - how to use
+===========================
+
+Keep all the files together in one folder
+(for example: Desktop\Disk Detective).
+Nothing is installed. No internet is used.
+
+There are three tabs at the top.
+
+SPACE MAP  (see what is using your space)
+-----------------------------------------
+Quick look:
+1.  Choose a drive in the "Drive:" box.
+2.  Press "Scan drive". Wait while it measures.
+3.  Coloured blocks show the folders in that one place.
+    Bigger block = more space used. Click a block to select it.
+    Double-click to open that folder. "Up one level" goes back.
+
+Find the big folders anywhere on the drive:
+4.  Press "Whole drive scan" (it takes longer).
+    It reads the whole drive once and lists the biggest folders
+    no matter how deep they are, plus the biggest files.
+    You can press "Stop" at any time. Nothing is changed.
+5.  Click a row to select it. Double-click to open it in the map.
+6.  Press "What is this folder?" to read plain-language notes
+    about any folder, even ones not in the cache list.
+
+MOVE A BIG FOLDER TO ANOTHER DRIVE
+----------------------------------
+Good for things like your DirectX shader cache:
+
+  C:\Users\<you>\AppData\Local\NVIDIA\DXCache
+  C:\Users\<you>\AppData\Local\D3DSCache
+
+1.  Select one or more folders in the list
+    (hold Ctrl to pick more than one).
+2.  Press "Move selected folder(s)...".
+3.  Choose the other drive (or a folder on it) and press OK.
+    The other place must be on a DIFFERENT drive. A move inside the
+    same drive is refused, because it would not free any space there.
+    Disk Detective checks there is enough free room before copying.
+    Folders that contain a shortcut or junction inside them are
+    refused too: Windows cannot copy those links safely.
+4.  Read the summary box, then press Yes.
+
+What happens:
+-  The folder is COPIED to the new place first.
+-  The copy is checked (same number of files, same size).
+-  Only then is the old copy removed.
+-  A "junction" (a special shortcut) is left in the old
+   place, so programs still find their files.
+
+Windows' own long paths are handled, and files that are in use
+are retried. Close the game or program that uses the folder
+first - if a program is using it, Disk Detective names the
+program and stops without changing anything.
+
+If a move is interrupted (power cut, crash, Windows closed), the
+next start finishes it or puts the folder back automatically and
+tells you what it did. The original is never thrown away. If the
+drive holding the folder is not connected at that start, the
+recovery record waits for the drive instead of giving up. If
+something has recreated the original folder, it leaves that, the
+backup and any copy alone and asks you to check them.
+
+CLEAN UP  (caches and leftovers)
+--------------------------------
+1.  Press "Scan my PC". It only looks; nothing is changed.
+2.  Read the green line, for example:
+    "You can free up 1.2 GB safely"
+3.  Press the green "Clean up ... of safe items" button.
+    A box shows exactly what will be moved.
+4.  Press Yes, or No to cancel.
+5.  Want to know what something is? Select it and press
+    "What is this?".
+6.  "Move this folder..." relocates a cache instead of removing it.
+7.  "Leave this alone" hides an item from future scans.
+    "Ignored folders" at the bottom brings it back.
+8.  "Duplicate files..." finds identical copies (newest is kept,
+    the rest can go to the Trash).
+9.  "Windows reserves..." explains the big space Windows keeps
+    for itself (old Windows installs, hibernation, component
+    store) and offers the correct Windows tool for it.
+
+WHERE REMOVED THINGS GO  ("What I did" tab)
+-------------------------------------------
+Nothing goes to the Recycle Bin, because Windows silently deletes
+items that do not fit inside it. Instead everything is renamed into
+a hidden folder on the same drive: Disk Detective's Trash.
+
+-  "Put it back" returns a removed item to its old place.
+-  "Undo this move" copies a moved folder back and removes the
+  shortcut.
+-  "Repair shortcut..." fixes a shortcut whose drive letter changed
+  or whose folder was moved by hand.
+-  "Check all shortcuts" tests every move you have made.
+-  "Delete for good" empties an item from the Trash.
+-  "Save a report" writes a page you can show to someone helping you.
+
+WHAT THE COLOURS MEAN (Clean up list)
+-------------------------------------
+Green   Safe to delete       rebuilds itself when needed
+Blue    Low risk             leftover installers and game files
+Amber   Ask before deleting  may hold settings - read first
+Pink    Keep - protected     save games; the app never deletes these
+
+ONE WINDOW AT A TIME
+--------------------
+Only one Disk Detective window can run at a time, and only one
+change can run at once. This stops two copies from moving or
+deleting the same folder. Opening a second one shows a message
+instead. Closing the window while a change is running is blocked
+until that change finishes.
+
+LARGER TEXT
+-----------
+Tick "Larger text" at the top right. The window closes and reopens
+with bigger writing. Everything else works the same.
+
+SOME FOLDERS NEED ADMINISTRATOR
+-------------------------------
+Windows' own temporary folders are only visible to an administrator.
+Press "Restart as administrator" at the bottom right and allow the
+Windows prompt. The app works the same, just sees more.
+
+IF WINDOWS BLOCKS THE SCRIPT
+----------------------------
+Right-click "DiskDetective.ps1" -> Properties ->
+tick "Unblock" -> OK.
+
+Or open PowerShell in this folder and run:
+powershell -ExecutionPolicy Bypass -File .\DiskDetective.ps1

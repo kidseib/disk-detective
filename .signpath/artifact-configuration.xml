@@ -2,13 +2,21 @@
 <!--
   SignPath artifact configuration for the Disk Detective release ZIP.
   The ZIP is the upload root; SignPath signs the declared files inside it.
-  The version parameter must match the launcher's FileVersion (for example 1.1.0.0).
+  version = launcher ProductVersion (for example 1.1.1)
+  fileVersion = launcher FileVersion (for example 1.1.1.0)
+  Product name, product version, and file version are enforced: signing fails
+  if the uploaded launcher does not carry these exact values.
 -->
 <artifact-configuration xmlns="signpath.io/artifact-configuration/v1">
+  <parameters>
+    <parameter name="version" required="true" />
+    <parameter name="fileVersion" required="true" />
+  </parameters>
   <zip-file>
     <pe-file path="DiskDetectiveLauncher.exe"
              product-name="Disk Detective"
-             product-version="${version}">
+             product-version="${version}"
+             file-version="${fileVersion}">
       <authenticode-sign/>
     </pe-file>
 

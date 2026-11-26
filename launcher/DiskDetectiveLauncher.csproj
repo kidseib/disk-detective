@@ -8,9 +8,10 @@
     <AssemblyName>DiskDetectiveLauncher</AssemblyName>
     <RootNamespace>DiskDetective</RootNamespace>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.1</Version>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Company>Disk Detective</Company>
     <Product>Disk Detective</Product>
     <Copyright>Copyright (c) 2026 kidseib</Copyright>

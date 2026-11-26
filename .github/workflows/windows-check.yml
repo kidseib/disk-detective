@@ -55,12 +55,12 @@ jobs:
           if ($process.ExitCode -ne 0) { throw "the window failed to start (exit $($process.ExitCode))" }
           Write-Host "window built and closed cleanly"
 
-      - name: Build the unsigned v1.1.0 signing candidate
+      - name: Build the unsigned v1.1.1 signing candidate
         shell: powershell
         run: |
           $ErrorActionPreference = "Stop"
-          & .\build\Build-Release.ps1 -Version 1.1.0
-          if (-not (Test-Path -LiteralPath ".\dist\Disk Detective 1.1.0.zip")) {
+          & .\build\Build-Release.ps1 -Version 1.1.1
+          if (-not (Test-Path -LiteralPath ".\dist\Disk Detective 1.1.1.zip")) {
             throw "the candidate ZIP was not created"
           }
 
@@ -68,7 +68,7 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = "Stop"
-          $zip = Join-Path $PWD "dist\Disk Detective 1.1.0.zip"
+          $zip = Join-Path $PWD "dist\Disk Detective 1.1.1.zip"
 
           Add-Type -AssemblyName System.IO.Compression.FileSystem
           $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
@@ -107,7 +107,7 @@ jobs:
           }
 
           $info = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($launcher)
-          if ($info.FileVersion -ne "1.1.0.0") {
+          if ($info.FileVersion -ne "1.1.1.0") {
             throw "unexpected launcher file version: $($info.FileVersion)"
           }
           if ($info.ProductName -notlike "Disk Detective*") {
@@ -131,6 +131,6 @@ jobs:
       - name: Upload unsigned candidate
         uses: actions/upload-artifact@v4
         with:
-          name: disk-detective-1.1.0-unsigned
-          path: dist/Disk Detective 1.1.0.zip
+          name: disk-detective-1.1.1-unsigned
+          path: dist/Disk Detective 1.1.1.zip
           if-no-files-found: error

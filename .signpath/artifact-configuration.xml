@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SignPath artifact configuration for the Disk Detective release ZIP.
+  The ZIP is the upload root; SignPath signs the declared files inside it.
+  The version parameter must match the launcher's FileVersion (for example 1.1.0.0).
+-->
+<artifact-configuration xmlns="signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file path="DiskDetectiveLauncher.exe"
+             product-name="Disk Detective"
+             product-version="${version}">
+      <authenticode-sign/>
+    </pe-file>
+
+    <powershell-file path="DiskDetective.ps1">
+      <authenticode-sign/>
+    </powershell-file>
+    <powershell-file path="DiskDetective.Core.ps1">
+      <authenticode-sign/>
+    </powershell-file>
+    <powershell-file path="DiskDetective.Tools.ps1">
+      <authenticode-sign/>
+    </powershell-file>
+    <powershell-file path="DiskDetective.Data.ps1">
+      <authenticode-sign/>
+    </powershell-file>
+  </zip-file>
+</artifact-configuration>

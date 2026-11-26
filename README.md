@@ -14,9 +14,11 @@ Disk Detective scans your drives, shows what is using space, and lets you clean 
 
 ## Quick start
 
-1. [Download Disk Detective.zip](Disk%20Detective.zip).
-2. Extract all seven files into one folder.
-3. Double-click `Disk Detective.bat`.
+1. [Download the latest release](https://github.com/kidseib/disk-detective/releases/latest).
+2. Extract all the files into one folder.
+3. Double-click `DiskDetectiveLauncher.exe`. If that does not start, double-click `Disk Detective.bat`.
+
+Older releases use `Disk Detective.bat`; the launcher is included from `v1.1.0` onward.
 
 Windows may show a security prompt because the app is not code-signed. Confirm the SHA-256 below and allow it to run only if you downloaded it from this repository. If Windows or PowerShell blocks it, see [Troubleshooting](#troubleshooting).
 
@@ -32,7 +34,8 @@ Windows may show a security prompt because the app is not code-signed. Confirm t
 ## Seeing what is using your space
 
 The **Space map** tab draws a coloured block for each folder in the current view. A bigger block means more bytes.
- Click a block to select that folder; double-click to open it; **Up one level** goes back. The breadcrumb shows where you are, and the table lists each folder's name, size, file count, last-used date, and type.
+Click a block to select that folder; double-click to open it; **Up one level** goes back.
+The breadcrumb shows where you are, and the table lists each folder's name, size, file count, last-used date, and type.
 
 - **Scan drive** measures the selected place and redraws the map.
 - **Whole drive scan** reads the entire drive once and lists the biggest folders anywhere, plus the biggest files. It can take several minutes; **Stop** is available at any time.
@@ -118,12 +121,17 @@ The move tools verify the folder before removing the extra copy. If the destinat
 
 ## Privacy
 
-Disk Detective runs entirely on your PC. It has no server, no telemetry, and no internet connection; your file names and scan results stay on your computer.
+Disk Detective runs entirely on your PC. It has no server, no telemetry, and no internet connection; your file names and scan results stay on your computer. Read the full [privacy policy](PRIVACY.md).
 
 ## Requirements
 
 - Windows 10 or 11
 - Windows PowerShell 5.1
+- .NET Framework 4.8 (included with current Windows 10 and Windows 11)
+
+## Code signing
+
+Disk Detective is preparing to use free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/). The `v1.1.0` candidate is not signed yet, and no signed release has been published. See [CODE_SIGNING.md](CODE_SIGNING.md) for what will be signed and how to verify a future signed release.
 
 ## Troubleshooting
 
@@ -131,22 +139,24 @@ First, make sure the zip came from this repository. If you do not know how to ch
 
 ### “Windows protected your PC” (SmartScreen)
 
-This warning appears because Disk Detective is not code-signed. Click **More info**, check that the file is `Disk Detective.bat` and that you downloaded the zip from this repository, then click **Run anyway** only if you trust it and the SHA-256 matches the one below. If you are not sure, close the warning and delete the download.
+This warning appears because Disk Detective is not code-signed. Click **More info**, check that the file is `DiskDetectiveLauncher.exe` (or the fallback `Disk Detective.bat`) and that you downloaded the zip from this repository, then click **Run anyway** only if you trust it and the SHA-256 matches the one below.
+If you are not sure, close the warning and delete the download.
 
 ### Windows says the downloaded file is blocked
 
-Right-click the downloaded zip, choose **Properties**, tick **Unblock**, click **Apply**, then extract it again. If you already extracted it, do the same for `DiskDetective.ps1` and `Disk Detective.bat`. Keep all seven files together in one folder.
+Right-click the downloaded zip, choose **Properties**, tick **Unblock**, click **Apply**, then extract it again. If you already extracted it, do the same for `DiskDetectiveLauncher.exe`, `DiskDetective.ps1`, and `Disk Detective.bat`. Keep all the files together in one folder.
 
 ### PowerShell says “running scripts is disabled on this system”
 
-Start the app with **`Disk Detective.bat`**, not by double-clicking `DiskDetective.ps1`. The `.bat` starts PowerShell with a bypass for that one launch, so you do not need to change Windows settings.
+Start the app with **`DiskDetectiveLauncher.exe`**, not by double-clicking `DiskDetective.ps1`. The launcher starts PowerShell with the app's own execution-policy setting, so you do not need to change Windows settings. The fallback `Disk Detective.bat` also works and uses a bypass for that one launch.
 
 If it still happens, the computer may be managed by an employer or school, or security software may be enforcing a policy. Do not turn off PowerShell security for the whole PC; ask the person who manages the computer.
 
 ### Antivirus says it found a threat
 
 Unsigned PowerShell tools are sometimes flagged because of how they behave, not because a known virus was found. Check the zip's SHA-256 (the long code in the VirusTotal section) and open the report.
- If the hash matches and the report is clean, allow **only this file** in your antivirus—never disable real-time protection or exclude your whole Downloads folder. If the hash does not match, do not run it; delete it and download a fresh copy.
+If the hash matches and the report is clean, allow **only this file** in your antivirus—never disable real-time protection or exclude your whole Downloads folder.
+If the hash does not match, do not run it; delete it and download a fresh copy.
 
 In Windows Security, open **Protection history**, select the item, and choose **Allow on device** only after you have checked the hash.
 
@@ -164,7 +174,11 @@ The published zip has a clean VirusTotal report:
 - Last analysis: November 25, 2026
 - Result: **No security vendors flagged this file as malicious.**
 
-VirusTotal scans the zip and may inspect its contents. The zip is the right artifact to check because it is exactly what you download; a folder cannot be submitted directly. Some engines cannot process archives, so a clean report is not a guarantee. For a file-by-file check, submit the extracted `.ps1` files separately.
+The report above belongs to the published `v1.0.0` ZIP. The `v1.1.0` launcher candidate has not been published or scanned; a freshly signed release will need a new VirusTotal report.
+
+VirusTotal scans the zip and may inspect its contents.
+The zip is the right artifact to check because it is exactly what you download; a folder cannot be submitted directly.
+Some engines cannot process archives, so a clean report is not a guarantee. For a file-by-file check, submit the extracted `.ps1` files separately.
 
 ## AI disclosure
 

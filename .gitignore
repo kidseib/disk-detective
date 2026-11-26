@@ -1,0 +1,5 @@
+build/launcher/
+build/stage/
+dist/
+**/bin/
+**/obj/

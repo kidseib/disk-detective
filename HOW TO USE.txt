@@ -5,6 +5,11 @@ Keep all the files together in one folder
 (for example: Desktop\Disk Detective).
 Nothing is installed. No internet is used.
 
+HOW TO START
+------------
+Double-click "DiskDetectiveLauncher.exe".
+If that does not start, double-click "Disk Detective.bat".
+
 There are three tabs at the top.
 
 SPACE MAP  (see what is using your space)
@@ -123,10 +128,12 @@ Windows' own temporary folders are only visible to an administrator.
 Press "Restart as administrator" at the bottom right and allow the
 Windows prompt. The app works the same, just sees more.
 
-IF WINDOWS BLOCKS THE SCRIPT
-----------------------------
-Right-click "DiskDetective.ps1" -> Properties ->
-tick "Unblock" -> OK.
+IF WINDOWS BLOCKS THE APP
+-------------------------
+Right-click the downloaded zip -> Properties ->
+tick "Unblock" -> Apply, then extract it again.
 
-Or open PowerShell in this folder and run:
-powershell -ExecutionPolicy Bypass -File .\DiskDetective.ps1
+If you already extracted it, right-click
+"DiskDetectiveLauncher.exe" -> Properties ->
+tick "Unblock" -> OK. The fallback "Disk Detective.bat"
+and the .ps1 files can be unblocked the same way.

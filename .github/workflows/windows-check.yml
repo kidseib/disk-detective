@@ -8,9 +8,14 @@ on:
 jobs:
   check:
     runs-on: windows-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
       - name: Parse every script
         shell: powershell
@@ -49,3 +54,83 @@ jobs:
           }
           if ($process.ExitCode -ne 0) { throw "the window failed to start (exit $($process.ExitCode))" }
           Write-Host "window built and closed cleanly"
+
+      - name: Build the unsigned v1.1.0 signing candidate
+        shell: powershell
+        run: |
+          $ErrorActionPreference = "Stop"
+          & .\build\Build-Release.ps1 -Version 1.1.0
+          if (-not (Test-Path -LiteralPath ".\dist\Disk Detective 1.1.0.zip")) {
+            throw "the candidate ZIP was not created"
+          }
+
+      - name: Smoke-test the packaged launcher
+        shell: powershell
+        run: |
+          $ErrorActionPreference = "Stop"
+          $zip = Join-Path $PWD "dist\Disk Detective 1.1.0.zip"
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+          try {
+            $entries = @($archive.Entries | ForEach-Object { $_.FullName })
+          } finally {
+            $archive.Dispose()
+          }
+          if ($entries.Count -ne 9) {
+            throw "the candidate ZIP should contain 9 files, but contains $($entries.Count)"
+          }
+
+          $smoke = Join-Path $env:RUNNER_TEMP ("disk detective smoke " + [guid]::NewGuid().ToString("N"))
+          New-Item -ItemType Directory -Path $smoke -Force | Out-Null
+          Expand-Archive -LiteralPath $zip -DestinationPath $smoke -Force
+
+          $launcher = Join-Path $smoke "DiskDetectiveLauncher.exe"
+          if (-not (Test-Path -LiteralPath $launcher)) {
+            throw "the packaged launcher is missing"
+          }
+
+          $bytes = [System.IO.File]::ReadAllBytes($launcher)
+          if ($bytes.Length -lt 0x100 -or $bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) {
+            throw "the launcher is not a PE file"
+          }
+          $peOffset = [BitConverter]::ToInt32($bytes, 0x3C)
+          if ($peOffset -lt 0 -or ($peOffset + 0x5E) -gt $bytes.Length) {
+            throw "the launcher has an invalid PE header offset"
+          }
+          if ([BitConverter]::ToUInt32($bytes, $peOffset) -ne 0x00004550) {
+            throw "the launcher has no PE signature"
+          }
+          $subsystem = [BitConverter]::ToUInt16($bytes, $peOffset + 0x5C)
+          if ($subsystem -ne 2) {
+            throw "the launcher is not a Windows GUI executable (subsystem $subsystem)"
+          }
+
+          $info = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($launcher)
+          if ($info.FileVersion -ne "1.1.0.0") {
+            throw "unexpected launcher file version: $($info.FileVersion)"
+          }
+          if ($info.ProductName -notlike "Disk Detective*") {
+            throw "unexpected launcher product name: $($info.ProductName)"
+          }
+
+          $env:DISKDETECTIVE_LAUNCHER_NO_DIALOG = "1"
+          $launcherProcess = Start-Process -FilePath $launcher -ArgumentList "-UiSmoke" -PassThru
+          $launcherProcess | Wait-Process -Timeout 90 -ErrorAction SilentlyContinue
+          if (-not $launcherProcess.HasExited) {
+            & taskkill.exe /PID $launcherProcess.Id /T /F | Out-Null
+            throw "the launcher smoke test did not finish within 90 seconds"
+          }
+          if ($launcherProcess.ExitCode -ne 0) {
+            throw "the launcher smoke test failed (exit $($launcherProcess.ExitCode))"
+          }
+
+          Remove-Item -LiteralPath $smoke -Recurse -Force
+          Write-Host "launcher started the packaged app and exited cleanly"
+
+      - name: Upload unsigned candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: disk-detective-1.1.0-unsigned
+          path: dist/Disk Detective 1.1.0.zip
+          if-no-files-found: error
